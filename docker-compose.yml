@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  mypostgre:
+    container_name: mypostgredb
+    image: mypostgre
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: productDb
+
+    ports:
+      - 5000:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      springboot-postgres-net:
+
+  springboot-restful-webservices:
+    container_name: product-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - mypostgre
+    environment:
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.datasource.url=jdbc:postgresql://mypostgre:5432/productDb
+      - spring.datasource.username=admin
+      - spring.datasource.password=admin
+      - spring.datasource.driver-class-name=org.postgresql.Driver
+    networks:
+      springboot-postgres-net:
+    restart: on-failure
+
+networks:
+  springboot-postgres-net:
