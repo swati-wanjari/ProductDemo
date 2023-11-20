@@ -2,13 +2,11 @@ package com.smarbl.controller;
 
 import com.smarbl.entity.LoginCredentials;
 import com.smarbl.entity.User;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
     @PostMapping("/login")
